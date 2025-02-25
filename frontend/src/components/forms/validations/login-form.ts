@@ -2,11 +2,11 @@ import { z } from "zod";
 
 const loginFormSchema = z.object({
   username: z
-    .string({ required_error: "Username is required" })
+    .string({ required_error: "'username' field is required" })
     .min(1, "Username is required"),
   password: z
-    .string({ required_error: "Password is required" })
-    .min(8, "Password must be at least 8 characters"),
+    .string({ required_error: "'password' field is required" })
+    .min(8, "Invalid password"),
 });
 
 export default loginFormSchema;

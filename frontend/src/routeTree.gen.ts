@@ -13,10 +13,9 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as AuthImport } from './routes/auth'
 import { Route as IndexImport } from './routes/index'
-import { Route as AuthIndexImport } from './routes/auth/index'
 import { Route as DashboardLayoutImport } from './routes/dashboard/_layout'
-import { Route as AuthCallbackImport } from './routes/auth/callback'
 import { Route as DashboardLayoutIndexImport } from './routes/dashboard/_layout/index'
 import { Route as DashboardLayoutSettingsImport } from './routes/dashboard/_layout/settings'
 
@@ -32,27 +31,21 @@ const DashboardRoute = DashboardImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const AuthRoute = AuthImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRoute,
 } as any)
 
-const AuthIndexRoute = AuthIndexImport.update({
-  id: '/auth/',
-  path: '/auth/',
-  getParentRoute: () => rootRoute,
-} as any)
-
 const DashboardLayoutRoute = DashboardLayoutImport.update({
   id: '/_layout',
   getParentRoute: () => DashboardRoute,
-} as any)
-
-const AuthCallbackRoute = AuthCallbackImport.update({
-  id: '/auth/callback',
-  path: '/auth/callback',
-  getParentRoute: () => rootRoute,
 } as any)
 
 const DashboardLayoutIndexRoute = DashboardLayoutIndexImport.update({
@@ -78,11 +71,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/auth/callback': {
-      id: '/auth/callback'
-      path: '/auth/callback'
-      fullPath: '/auth/callback'
-      preLoaderRoute: typeof AuthCallbackImport
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthImport
       parentRoute: typeof rootRoute
     }
     '/dashboard': {
@@ -98,13 +91,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/dashboard'
       preLoaderRoute: typeof DashboardLayoutImport
       parentRoute: typeof DashboardRoute
-    }
-    '/auth/': {
-      id: '/auth/'
-      path: '/auth'
-      fullPath: '/auth'
-      preLoaderRoute: typeof AuthIndexImport
-      parentRoute: typeof rootRoute
     }
     '/dashboard/_layout/settings': {
       id: '/dashboard/_layout/settings'
@@ -153,28 +139,25 @@ const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/auth/callback': typeof AuthCallbackRoute
+  '/auth': typeof AuthRoute
   '/dashboard': typeof DashboardLayoutRouteWithChildren
-  '/auth': typeof AuthIndexRoute
   '/dashboard/settings': typeof DashboardLayoutSettingsRoute
   '/dashboard/': typeof DashboardLayoutIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/auth/callback': typeof AuthCallbackRoute
+  '/auth': typeof AuthRoute
   '/dashboard': typeof DashboardLayoutIndexRoute
-  '/auth': typeof AuthIndexRoute
   '/dashboard/settings': typeof DashboardLayoutSettingsRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/auth/callback': typeof AuthCallbackRoute
+  '/auth': typeof AuthRoute
   '/dashboard': typeof DashboardRouteWithChildren
   '/dashboard/_layout': typeof DashboardLayoutRouteWithChildren
-  '/auth/': typeof AuthIndexRoute
   '/dashboard/_layout/settings': typeof DashboardLayoutSettingsRoute
   '/dashboard/_layout/': typeof DashboardLayoutIndexRoute
 }
@@ -183,20 +166,18 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/auth/callback'
-    | '/dashboard'
     | '/auth'
+    | '/dashboard'
     | '/dashboard/settings'
     | '/dashboard/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth/callback' | '/dashboard' | '/auth' | '/dashboard/settings'
+  to: '/' | '/auth' | '/dashboard' | '/dashboard/settings'
   id:
     | '__root__'
     | '/'
-    | '/auth/callback'
+    | '/auth'
     | '/dashboard'
     | '/dashboard/_layout'
-    | '/auth/'
     | '/dashboard/_layout/settings'
     | '/dashboard/_layout/'
   fileRoutesById: FileRoutesById
@@ -204,16 +185,14 @@ export interface FileRouteTypes {
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AuthCallbackRoute: typeof AuthCallbackRoute
+  AuthRoute: typeof AuthRoute
   DashboardRoute: typeof DashboardRouteWithChildren
-  AuthIndexRoute: typeof AuthIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AuthCallbackRoute: AuthCallbackRoute,
+  AuthRoute: AuthRoute,
   DashboardRoute: DashboardRouteWithChildren,
-  AuthIndexRoute: AuthIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -227,16 +206,15 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/auth/callback",
-        "/dashboard",
-        "/auth/"
+        "/auth",
+        "/dashboard"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
-    "/auth/callback": {
-      "filePath": "auth/callback.tsx"
+    "/auth": {
+      "filePath": "auth.tsx"
     },
     "/dashboard": {
       "filePath": "dashboard",
@@ -251,9 +229,6 @@ export const routeTree = rootRoute
         "/dashboard/_layout/settings",
         "/dashboard/_layout/"
       ]
-    },
-    "/auth/": {
-      "filePath": "auth/index.tsx"
     },
     "/dashboard/_layout/settings": {
       "filePath": "dashboard/_layout/settings.tsx",

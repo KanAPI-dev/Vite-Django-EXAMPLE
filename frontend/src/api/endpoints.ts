@@ -3,7 +3,26 @@ import getErrorMessage, { reportError } from "@/lib/utils/error-handlers";
 import * as urls from "@/lib/constants";
 import * as aaTypes from "@/types/allauth";
 import * as types from "@/types";
+import { LoginFormValues } from "@/components/forms/validations/login-form";
+import { RegisterFormValues } from "@/components/forms/validations/register-form";
+import { ForgotPasswordFormValues } from "@/components/forms/validations/forgot-password";
 
+/**
+ * The provider redirect endpoint is intentionally missing.
+ * This endpoint is as odd one, as the docs specify that this
+ * functionality CANNOT be done through means of an http request.
+ * This means that the required data must be sent via a form.
+ *
+ * References:
+ * - https://docs.allauth.org/en/latest/headless/openapi-specification/#tag/Authentication:-Providers
+ * - https://github.com/pennersr/django-allauth/blob/main/examples/react-spa/frontend/src/lib/allauth.js#L88
+ *   - Take a look at the `postForm` function.
+ * - https://github.com/axios/axios?tab=readme-ov-file#urlsearchparams
+ *   - The endpoint requires the body data to be `application/x-www-form-urlencoded`.
+ *     Although this is possible with axios, it cannot be used due to being an http request.
+ */
+
+/** */
 export async function getAuthConfig(): Promise<aaTypes.AAConfig> {
   try {
     const res = await api.get(urls.CONFIGURATION_URL);
@@ -32,7 +51,7 @@ export async function logout(): Promise<void> {
 }
 
 export async function login(
-  form_values: types.LoginFormValues
+  form_values: LoginFormValues
 ): Promise<aaTypes.AALogin> {
   try {
     const res = await api.post(urls.LOGIN_URL, form_values);
@@ -43,7 +62,7 @@ export async function login(
 }
 
 export async function signup(
-  form_values: types.SignupFormValues
+  form_values: RegisterFormValues
 ): Promise<aaTypes.AASignup> {
   try {
     const res = await api.post(urls.SIGNUP_URL, form_values);
@@ -85,10 +104,10 @@ export async function reauthenticate(
 }
 
 export async function requestPassword(
-  email: string
+  form_values: ForgotPasswordFormValues
 ): Promise<aaTypes.AARequestPassword> {
   try {
-    const res = await api.post(urls.REQUEST_PASSWORD_URL, { email });
+    const res = await api.post(urls.REQUEST_PASSWORD_URL, form_values);
     return res.data;
   } catch (error) {
     return reportError({ message: getErrorMessage(error) });
@@ -105,21 +124,10 @@ export async function getPasswordResetInfo(): Promise<aaTypes.AARequestPassword>
 }
 
 export async function resetPassword(
-  form_values: types.ResetPasswordFormValues
+  form_values: ForgotPasswordFormValues
 ): Promise<aaTypes.AAResetPassword> {
   try {
     const res = await api.post(urls.RESET_PASSWORD_URL, form_values);
-    return res.data;
-  } catch (error) {
-    return reportError({ message: getErrorMessage(error) });
-  }
-}
-
-export async function providerRedirect(
-  form_values: types.ProviderRedirectFormValues
-): Promise<void> {
-  try {
-    const res = await api.post(urls.PROVIDER_REDIRECT_URL, form_values);
     return res.data;
   } catch (error) {
     return reportError({ message: getErrorMessage(error) });

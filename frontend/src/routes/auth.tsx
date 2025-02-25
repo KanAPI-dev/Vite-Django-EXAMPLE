@@ -4,8 +4,9 @@ import { createFileRoute } from "@tanstack/react-router";
 import ProtectedRoute from "@/components/protected-route";
 import LoginForm from "@/components/forms/login-form";
 import RegisterForm from "@/components/forms/register-form";
+import ForgotPasswordForm from "@/components/forms/forgot-password-form";
 
-export const Route = createFileRoute("/auth/")({
+export const Route = createFileRoute("/auth")({
   component: AuthPage,
 });
 
@@ -17,12 +18,12 @@ function AuthPage() {
   return (
     <ProtectedRoute>
       <div className="container pt-10 pb-40 flex justify-center">
-        {formType === "login" ? (
-          <LoginForm setFormType={setFormType} />
-        ) : formType === "register" ? (
+        {formType === "register" ? (
           <RegisterForm setFormType={setFormType} />
+        ) : formType === "forgot_password" ? (
+          <ForgotPasswordForm setFormType={setFormType} />
         ) : (
-          <div>TODO: Password Reset Form</div>
+          <LoginForm setFormType={setFormType} />
         )}
       </div>
     </ProtectedRoute>

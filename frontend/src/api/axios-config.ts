@@ -1,12 +1,8 @@
 import axios from "axios";
 import getCookie from "@/lib/utils/get-cookie";
 
-const apiUrl = "/choreo-apis/awbo/backend/rest-api-be2/v1.0";
-
 const api = axios.create({
-  baseURL: import.meta.env.VITE_BACKEND_URL
-    ? import.meta.env.VITE_BACKEND_URL
-    : apiUrl,
+  baseURL: import.meta.env.VITE_BACKEND_URL,
   headers: {
     "Content-Type": "application/json",
   },

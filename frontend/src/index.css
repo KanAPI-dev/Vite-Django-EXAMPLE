@@ -8,6 +8,10 @@
   @apply max-w-screen-xl mx-auto px-4;
 }
 
+@utility required_field {
+  @apply after:content-['*'] after:ml-1 after:text-destructive;
+}
+
 :root {
   /* For the <Sidebar /> */
   --header-height: 68px;

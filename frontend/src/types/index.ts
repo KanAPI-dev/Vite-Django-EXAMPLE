@@ -28,25 +28,6 @@ export type AuthState = {
   FORM VALUE TYPES - TEMPORARY!!!!
   REPLACE WITH z.infer<> WHEN ZOD IS INTRODUCED!!!!!
 ==========================================*/
-/** username and email are optional for now, but one of the two must be present */
-export type LoginFormValues = {
-  /** The username. */
-  username?: string;
-  /** The email address. */
-  email?: string;
-  /** The password. */
-  password: string;
-};
-
-/** username AND email are not both required, but will be for this type. can adjust as needed. */
-export type SignupFormValues = {
-  /** The email address. */
-  email: string;
-  /** The username. */
-  username: string;
-  /** The password. */
-  password: string;
-};
 
 /** the `key` field may need to be a hidden input that is _not_ user populated */
 export type ResetPasswordFormValues = {
@@ -54,22 +35,6 @@ export type ResetPasswordFormValues = {
   key: string;
   /** The password. */
   password: string;
-};
-
-/** submitting a form on redirect eh? */
-export type ProviderRedirectFormValues = {
-  /** The provider ID. */
-  provider: string;
-  /** The URL to return to after the redirect flow is complete. */
-  callback_url: string;
-  /**
-   * The process to be executed when the user successfully authenticates.
-   * When set to `login`, the user will be logged into the account to which
-   * the provider account is connected, or if no such account exists, a signup
-   * will occur. If set to `connect`, the provider account will be connected to
-   * the list of provider accounts for the currently authenticated user.
-   */
-  process: "login" | "connect";
 };
 
 export type ProviderTokenFormValues = {
